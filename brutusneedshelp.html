@@ -1,0 +1,2843 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>test - other-mirror</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+
+    <style>
+        /* General */
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://discordapp.com/assets/6c6374bad0b0b6d204d8d6dc4a18d820.woff);
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://discordapp.com/assets/e8acd7d9bf6207f99350ca9f9e23b168.woff);
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://discordapp.com/assets/3bdef1251a424500c1b3a78dea9b7e57.woff);
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://discordapp.com/assets/be0060dafb7a0e31d2a1ca17c0708636.woff);
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://discordapp.com/assets/8e12fb4f14d9c4592eb8ec9f22337b04.woff);
+    font-weight: 700;
+}
+
+body {
+    font-family: "Whitney", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 17px;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+img {
+    object-fit: contain;
+}
+
+.markdown {
+    white-space: pre-wrap;
+    line-height: 1.3;
+    overflow-wrap: break-word;
+}
+
+.spoiler {
+    border-radius: 3px;
+}
+
+.quote {
+    margin: 0.5em 0;
+    padding-left: 0.6em;
+    border-left: 4px solid;
+    border-radius: 3px;
+}
+
+.pre {
+    font-family: "Consolas", "Courier New", Courier, monospace;
+}
+
+.pre--multiline {
+    margin-top: 0.25em;
+    padding: 0.5em;
+    border: 2px solid;
+    border-radius: 5px;
+}
+
+.pre--inline {
+    padding: 2px;
+    border-radius: 3px;
+    font-size: 0.85em;
+}
+
+.mention {
+    border-radius: 3px;
+    padding: 0 2px;
+    color: #7289da;
+    background: rgba(114, 137, 218, .1);
+    font-weight: 500;
+}
+
+.emoji {
+    width: 1.25em;
+    height: 1.25em;
+    margin: 0 0.06em;
+    vertical-align: -0.4em;
+}
+
+.emoji--small {
+    width: 1em;
+    height: 1em;
+}
+
+.emoji--large {
+    width: 2.8em;
+    height: 2.8em;
+}
+
+/* Preamble */
+
+.preamble {
+    display: grid;
+    margin: 0 0.3em 0.6em 0.3em;
+    max-width: 100%;
+    grid-template-columns: auto 1fr;
+}
+
+.preamble__guild-icon-container {
+    grid-column: 1;
+}
+
+.preamble__guild-icon {
+    max-width: 88px;
+    max-height: 88px;
+}
+
+.preamble__entries-container {
+    grid-column: 2;
+    margin-left: 0.6em;
+}
+
+.preamble__entry {
+    font-size: 1.4em;
+}
+
+.preamble__entry--small {
+    font-size: 1em;
+}
+
+/* Chatlog */
+
+.chatlog {
+    max-width: 100%;
+}
+
+.chatlog__message-group {
+    display: grid;
+    margin: 0 0.6em;
+    padding: 0.9em 0;
+    border-top: 1px solid;
+    grid-template-columns: auto 1fr;
+}
+
+.chatlog__author-avatar-container {
+    grid-column: 1;
+    width: 40px;
+    height: 40px;
+}
+
+.chatlog__author-avatar {
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+}
+
+.chatlog__messages {
+    grid-column: 2;
+    margin-left: 1.2em;
+    min-width: 50%;
+}
+
+.chatlog__author-name {
+    font-weight: 500;
+}
+
+.chatlog__timestamp {
+    margin-left: 0.3em;
+    font-size: 0.75em;
+}
+
+.chatlog__message {
+    padding: 0.1em 0.3em;
+    margin: 0 -0.3em;
+    background-color: transparent;
+    transition: background-color 1s ease;
+}
+
+.chatlog__content {
+    font-size: 0.95em;
+    word-wrap: break-word;
+}
+
+.chatlog__edited-timestamp {
+    margin-left: 0.15em;
+    font-size: 0.8em;
+}
+
+.chatlog__attachment-thumbnail {
+    margin-top: 0.3em;
+    max-width: 50%;
+    max-height: 500px;
+    border-radius: 3px;
+}
+
+.chatlog__embed {
+    display: flex;
+    margin-top: 0.3em;
+    max-width: 520px;
+}
+
+.chatlog__embed-color-pill {
+    flex-shrink: 0;
+    width: 0.25em;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.chatlog__embed-content-container {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5em 0.6em;
+    border: 1px solid;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.chatlog__embed-content {
+    display: flex;
+    width: 100%;
+}
+
+.chatlog__embed-text {
+    flex: 1;
+}
+
+.chatlog__embed-author {
+    display: flex;
+    margin-bottom: 0.3em;
+    align-items: center;
+}
+
+.chatlog__embed-author-icon {
+    margin-right: 0.5em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+.chatlog__embed-author-name {
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-title {
+    margin-bottom: 0.2em;
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-description {
+    font-weight: 500;
+    font-size: 0.85em;
+}
+
+.chatlog__embed-fields {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.chatlog__embed-field {
+    flex: 0;
+    min-width: 100%;
+    max-width: 506px;
+    padding-top: 0.6em;
+    font-size: 0.875em;
+}
+
+.chatlog__embed-field--inline {
+    flex: 1;
+    flex-basis: auto;
+    min-width: 150px;
+}
+
+.chatlog__embed-field-name {
+    margin-bottom: 0.2em;
+    font-weight: 600;
+}
+
+.chatlog__embed-field-value {
+    font-weight: 500;
+}
+
+.chatlog__embed-thumbnail {
+    flex: 0;
+    margin-left: 1.2em;
+    max-width: 80px;
+    max-height: 80px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-image-container {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-image {
+    max-width: 500px;
+    max-height: 400px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-footer {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-footer-icon {
+    margin-right: 0.2em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+
+.chatlog__embed-footer-text {
+    font-size: 0.75em;
+    font-weight: 500;
+}
+
+.chatlog__reactions {
+    display: flex;
+}
+
+.chatlog__reaction {
+    display: flex;
+    align-items: center;
+    margin: 0.35em 0.1em 0.1em 0.1em;
+    padding: 0.2em 0.35em;
+    border-radius: 3px;
+}
+
+.chatlog__reaction-count {
+    min-width: 9px;
+    margin-left: 0.35em;
+    font-size: 0.875em;
+}
+
+.chatlog__bot-tag {
+    position: relative;
+    top: -.2em;
+    margin-left: 0.3em;
+    padding: 0.05em 0.3em;
+    border-radius: 3px;
+    vertical-align: middle;
+    line-height: 1.3;
+    background: #7289da;
+    color: #ffffff;
+    font-size: 0.625em;
+    font-weight: 500;
+}
+
+/* Postamble */
+
+.postamble {
+    margin: 1.4em 0.3em 0.6em 0.3em;
+    padding: 1em;
+    border-top: 1px solid;
+}
+    </style>
+    <style>
+        /* General */
+
+body {
+    background-color: #36393e;
+    color: #dcddde;
+}
+
+a {
+    color: #0096cf;
+}
+
+.spoiler {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.quote {
+    border-color: #4f545c;
+}
+
+.pre {
+    background-color: #2f3136 !important;
+}
+
+.pre--multiline {
+    border-color: #282b30 !important;
+    color: #b9bbbe !important;
+}
+
+/* === Preamble === */
+
+.preamble__entry {
+    color: #ffffff;
+}
+
+/* Chatlog */
+
+.chatlog__message-group {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.chatlog__author-name {
+    color: #ffffff;
+}
+
+.chatlog__timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__message--highlighted {
+    background-color: rgba(114, 137, 218, 0.2) !important;
+}
+
+.chatlog__message--pinned {
+    background-color: rgba(249, 168, 37, 0.05);
+}
+
+.chatlog__edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__embed-color-pill--default {
+    background-color: rgba(79, 84, 92, 1);
+}
+
+.chatlog__embed-content-container {
+    background-color: rgba(46, 48, 54, 0.3);
+    border-color: rgba(46, 48, 54, 0.6);
+}
+
+.chatlog__embed-author-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-author-name-link {
+    color: #ffffff;
+}
+
+.chatlog__embed-title {
+    color: #ffffff;
+}
+
+.chatlog__embed-description {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-field-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-field-value {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-footer {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__reaction {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.chatlog__reaction-count {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* Postamble */
+
+.postamble {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.postamble__entry {
+    color: #ffffff;
+}
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/solarized-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.pre--multiline').forEach(block => hljs.highlightBlock(block));
+        });
+    </script>
+
+    <script>
+        function scrollToMessage(event, id) {
+            var element = document.getElementById('message-' + id);
+
+            if (element) {
+                event.preventDefault();
+
+                element.classList.add('chatlog__message--highlighted');
+
+                window.scrollTo({
+                    top: element.getBoundingClientRect().top - document.body.getBoundingClientRect().top - (window.innerHeight / 2),
+                    behavior: 'smooth'
+                });
+
+                window.setTimeout(function() {
+                    element.classList.remove('chatlog__message--highlighted');
+                }, 2000);
+            }
+        }
+    </script>
+</head>
+<body>
+
+<div class="preamble">
+    <div class="preamble__guild-icon-container">
+        <img class="preamble__guild-icon" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Guild icon" />
+    </div>
+    <div class="preamble__entries-container">
+        <div class="preamble__entry">Brutus Needs Help</div>
+    </div>
+</div>
+
+<div class="chatlog">
+    <div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-07-16</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">Oh<br>My PC just died</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-07-17</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">I broke something today<br>i have achieved my daily quota of broken stuff</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-07-07</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">I broke a 6700 a week ago</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-07-07</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">I killed a cpu today<br>i7-6700</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-04-14</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">It dead</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-06-26</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">it fucking killed my WX 5100</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-05-14</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">also I have another dead 5960x<br>mfw<br>but this one was shipped in a fucking sandwich bag<br>so</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-06-02</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">it killed a mobo</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-04-13</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">I think I killed a 5960x<br>mfw</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-04-13</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">I thought my bridge config was defective<br><strong>nope.</strong><br>Bad NIC</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-07-07</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">fucking CPU is now dead</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-07-13</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">oh look<br>the system finally POSTed<br>with a fuckton of artifacts though<br>it's dead</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-07-09</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">but I do have a dead Epyc server<br>:(</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-05-17</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">I have a dead 1080<br>what to do with it</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-06-26</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">my mining rig has 2 dead GPUs<br>one of them literally lit up</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-05-13</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">I have a dead LGA 1151 board<br>I win</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2016-11-17</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">The RAID is dead</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-05-12</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">my 'new' 5960x is also dead<br>you cannot be serious</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-05-01</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">the heating element is fucking dead</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-05-12</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">mfw<br>I got a 5960x<br>it<br>is<br>working<br>but the board's dead</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-05-12</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">the laptop is literally dead</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-04-25</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">I have a 5960x but well<br>CPU dead</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2016-11-19</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">you won't want it anyways<br>dead DisplayPort</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-04-11</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">well shit.<br>My board is 100% dead<br>Nothing can be done to revive it</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-04-09</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">first card was defective, fan was dead</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-04-04</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">The front USB headers are dead on my system</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-04-05</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">anyways<br>new webcam comes tomorrow<br>I'm using a black MacBook from 2006 right now<br>it has a dead battery and is generally useless for it's intended purpose</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-03-31</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">But seriously sobe<br>I dropped a dead hard drive<br>Down stairs</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2016-11-19</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">so<br>I just killed another 1080<br>it's effectively dead<br>HDMI and DVI work though!<br>so clearly it's fine</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2016-03-02</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">Well RIP one of my monitors is dead</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2016-02-24</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">How do you guys charge your phones with a dead usb port?<br>wireless charging?</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2016-11-17</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">lel<br>I threw one into a server for the hell of it<br>the vibrations murdered that drive so fast<br>it was on the way out anyways<br>But now it's dead</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2016-09-15</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">hey guys<br>My GPU is very very fucked: http://i.imgur.com/8zsAZup.jpg</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2016-07-14</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">I have a dead R9 290 next to me</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2016-02-23</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">:(<br>Looks like my debian install is dead<br>http://prnt.sc/a75am4r</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2016-08-26</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">Also I have a server that's dead weight<br>what should I do with it</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2016-10-19</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">fuck EVGA<br>Seriously<br>x16 slot in my board is dead</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2016-08-21</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">what the fuck gigabyte<br>My RX 480 has an invalid serial number<br>... and the card is dead</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2016-10-03</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">well you see<br>motherboard's dead</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2016-07-11</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">I have an i7 with a dead dGPU</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2016-10-02</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">mouse is dead though</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2016-07-06</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">well<br>how about that<br>my new RX 480 seems to be very dead.</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2016-10-13</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">but receiving a dead GPU after a RMA<br>well not dead<br>just very problematic</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2016-10-06</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">SSD's actually dead<br>can't access the main drive anymore</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2016-10-06</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">Useless? MY FUCKING BOOT DRIVE IS DEAD.</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2016-10-01</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">I'm pretty much taking the SSD from a dead system (motherboard died)<br>and putting it in a new prebuilt system</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2016-06-01</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown"><em>looks at dead 290</em></span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-02-19</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">I have a dead 1060</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2016-09-30</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">My i7-3770K system is dead... :(</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2016-06-21</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">I have a 750Ti<br>and a 290 with a dead VRM</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2016-06-03</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">stopped using it because it had 2 dead RAM slots</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2016-05-27</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">This CPU is dead<br>Going to need a replacement</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2016-05-27</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">it dead<br>This CPU is not overclockable<br>remind me to never buy an Intel CPU again</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2016-05-22</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">eh it was dead<br>wasn't booting anyways<br>It also took out a CPU with it</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2016-01-02</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">no I mean<br>mine is dead</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2016-05-10</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">I got a card with a dead fan for $100</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2016-05-03</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">brother's computer has a video card with 2 dead fans<br>and I don't want that card burning up</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-01-17</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">so I have a laptop that's dead<br>what should I do with it</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-01-04</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">But mine has one fucking dead pixel</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-02-17</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">my k70 is dead :(</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-01-16</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">I did get one but it was dead<br>fan didn't even work</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-01-17</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">oh logan<br>I now have 2 dead laptops</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-02-25</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">the 2nd x16 slot on my motherboard is dead<br>as in<br>it won't go past the Asus ROG boot logo<br>I seem to be the killer of all things hardware for some reason<br>idk what the fuck I did to this board</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-02-25</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">mfw<br>I've got a dead 480</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-03-07</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">Asus<br>Go fuck yourself<br>My board appears to be dead now<br>I have had it for like 7 hours</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-03-01</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">is that why my PREMIUM Intel board has a dead PCIe slot<br>second slot doesn't work</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-05-08</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">I killed 2 1800x yay</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-07-14</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">I've killed a lot of stuff<br>but have never actually had anything <em>catch on fire</em></span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-07-14</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">that has been my experience with corsair<br>not the best<br>every product I've bought from them has managed to screw itself up in some horrific way<br>my keyboard has broken LEDs<br>my PSU killed $1500 of computer parts<br>my SF600 has yet to do anything bad though</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-06-19</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">I set an overclock and ignored it<br>I killed the chart<br>Chat</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-04-30</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">I killed it.<br>I killed a second Ryzen CPU</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-04-02</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">I kill components</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-05-01</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">mfw<br>I killed a 3D printer part again<br>I killed the heater</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-03-30</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">rip ryzen CPU</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-03-30</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">but it definitely killed my CPU</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-04-24</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">mfw I'm back with my previous system<br>my board killed my CPU</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-04-15</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">I used to kill a lot of hardware<br>for some reason<br>that seems to have stopped though</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-03-23</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">and I killed a 1060 too</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-04-17</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">yesterday I killed a 8TB hard drive<br>intentionally though</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-03-31</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">tony<br>is it bad that I killed a monitor power brick</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-03-30</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">why do you think I accidentally killed the board</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-04-02</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">AM4 boards are shit and I killed one</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-03-15</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">IT KILLED MY CPU</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-03-30</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">well<br>there goes a 1800x<br>am I the first person to kill a 1800x</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-03-26</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">because tony<br>my brother keeps killing my fucking GPUs</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-03-26</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">so uh<br>what to do<br>my brother's system has killed 4 of my GPUs</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-03-25</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">I had the B350M-A before<br>same board as you<br>I killed that</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-03-24</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">my brother killed a gtx 1070</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-03-22</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">It's all okay<br>But FUCK I KILLED A TITAN</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-03-23</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">I've set a board on fire by doing that kek</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-03-22</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">That's an atx board<br>b350m killed my CPU</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-03-10</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">just killed a CPU of mine</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-03-11</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">I killed the temp sensor</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-03-11</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">is it possible to get Asus to pay for the CPU that their board killed?</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-03-10</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">it causes a loud bang and temporarily kills my servers</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-03-11</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">http://i.imgur.com/RNKETFu.jpg<br>this has a lot to do with it<br>Broken socket</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-03-11</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">Some CPU pins are now blackened<br>http://i.imgur.com/CVOblts.jpg</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-03-01</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">it managed to kill:<br>- HD 7950<br>- 2 i7-3770ks<br>- GTX 1080<br>- 2 Z77 motherboards<br>- 32GB RAM<br>does it win an award for most destructive PSU</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-02-19</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">hey uh<br>is it possible for a monitor to kill a GPU</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-01-17</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">Cat killed my previous laptop</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-02-08</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">the card killed it's own power delivery after a few months</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-02-02</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">I had to replace the board<br>since I killed the OEM board with a bios updates<br>the update tool just frooze</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-01-16</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">after all this particular unit has killed 2 systems</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-01-15</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">It did cause system issues<br>killing 1-2 GPUs is not fine</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-01-15</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">am RMAing a AX750 under the reason that it killed a GPU and was causing instability</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-01-07</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">Can I run it on my virtual machine<br>kek<br>sadly that is my PC right now since I managed to kill a 1080</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2016-11-20</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">So I just killed a sound card</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2016-10-06</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">also I somehow had a motherboard kill a M.2 adapter<br>I didn't even know that was possible</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2016-10-05</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">my motherboard killed a SSD</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2016-08-02</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">kills my wireless mouse when in use</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2016-09-25</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">When delidding my i7<br>I accidentally threw it across a room</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2016-08-27</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">I think I killed Intel graphics though<br>It doesn't work 95% of the time</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2016-07-29</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">apparently you CAN kill HBM</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2016-07-15</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">I killed an iGPU<br>I didn't kill the CPU core though</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2016-05-30</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">I can't kill my raspberry pi clone</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2016-05-21</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">How did my server manage to kill an enterprise hard drive so quickly<br>D:</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2016-05-11</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">I killed most of my hard drives<br>by putting them into a server :D<br>server vibrations + consumer drives = nope</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-07-23</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">USB fucking died</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-07-23</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">really good job EVGA<br>dead chipset USB<br>system has absolutely nothing</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-07-23</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">oh yeah<br>also need to RMA my laptop<br>the hinge shattered at a mounting point</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-07-23</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">so<br>EVGA's mobo killed my fucking CPU<br>potentially</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-07-24</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">all I did was restart my system<br>and ALL of the USB ports stopped working</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-07-24</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">But yeah RIP mobo<br>it also doesn't POST anymore</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-07-26</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">so my system is still broken</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-07-26</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">how fucked does my WX5100 look</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-07-27</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">I have a Dell XPS 13.<br>The hinge disconnected from the case on the right side<br></span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-07-31</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">I killed a Fury X watercooler<br>it leaks<br></span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-07-31</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">I'm worried that if I use the board<br>it'll light my system on fire</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-07-31</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">how can I get EVGA's attention<br>and get them to send me a board that doesn't look like it's going to kill my PC</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-07-31</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">what the fuck<br>the VRM is like<br>soaked in fucking oil<br>what is this shit</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-08-10</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">ah yes<br>I love you EVGA<br>for fucking killing my 5960X</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-08-10</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">My 5960X blew up in their board.<br>reset CMOS<br>and bang<br>there goes a CPU<br>I used the button<br>bang, there goes a CPU</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-09-20</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">I managed to kill an Intel iGPU this time kek</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-09-25</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">I killed a fucking LGA 2011-3 socket at 300W</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-10-07</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">rip Titan X 2017, killed by a shitty motherboard</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-11-02</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">I killed my Titan X Pascal twice<br>first card died<br>second card was DOA</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-11-10</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">I managed to kill one of the SATA backplanes</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2017-11-19</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">I unplugged the DP cable while it was running and plugged it back in<br>the GPU is kill now</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2018-01-11</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">I killed an AIO<br>Kraken X62<br>radiator might be clogged</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2018-03-06</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">my 1800x dying is not my fault<br>a singular core is dead<br>putting a load on it will either crash the application<br>or take the system with it</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2018-03-31</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">I haven't broken much hardware lately besides those 3 CPUs.<br>One had a bad PCI Express controller<br>all of them had issues at stock<br>the third chip outright would reset the system just out of nowhere</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2018-04-04</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">I had a mic die and I was using phantom power<br>the cable broke inside</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2018-04-05</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">so apparently my CPU has committed suicide</span>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://images.discordapp.net/avatars/109854413203456000/31f7de5c4df3960e8a73bba1e4c8b4cd.png" alt="Avatar" />
+    </div>
+    <div class="chatlog__messages">
+    <span class="chatlog__author-name" style="color: ">Brutus</span>
+
+        <span class="chatlog__timestamp">2018-04-20</span>
+
+            <div class="chatlog__message">
+                <div class="chatlog__content">
+                    <span class="markdown">My CPU is dead<br>it won't get through post anymore</span>
+                </div>
+            </div>
+    </div>
+</div>
+
+</div>
+
+</body>
+</html>
